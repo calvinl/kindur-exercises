@@ -29,17 +29,19 @@ Example
 
 Let’s say you publish to http://mywebsite.com/ (you don’t need a custom domain for this project, any IP address we can access will do):
 
-    $ curl -X POST -H "Content-Type: application/json" -d '{"mess age": "foo"}'
+    $ curl -X POST -H "Content-Type: application/json" -d '{"message": "foo"}'
     http://mywebsite.com/messages
     {
-    "digest": "b5bb9d8014a0f9b1d61e21e796d78dccdf1352f23cd32812f 4850b878ae4944c"
+    "digest": "b5bb9d8014a0f9b1d61e21e796d78dccdf1352f23cd32812f4850b878ae4944c"
     }
 
 You can calculate that your result is correct on the command line:
 
-    $ echo -n "foo" | shasum -a 256 b5bb9d8014a0f9b1d61e21e796d78dccdf1352f23cd32812f4850b878ae49 44c -
-    You can now query your service for the original message:
-    $ curl http://mywebsite.com/messages/b5bb9d8014a0f9b1d61e21e796d78dc cdf1352f23cd32812f4850b878ae4944c
+    $ echo -n "foo" | shasum -a 256 b5bb9d8014a0f9b1d61e21e796d78dccdf1352f23cd32812f4850b878ae4944c
+
+You can now query your service for the original message:
+
+    $ curl http://mywebsite.com/messages/b5bb9d8014a0f9b1d61e21e796d78dccdf1352f23cd32812f4850b878ae4944c
     {
     "message": "foo"
     }
