@@ -1,0 +1,14 @@
+{
+  "name": "exercise-3",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "NODE_ENV=test $(npm bin)/jest"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "jest": "^22.4.3"
+  }
+}

@@ -107,8 +107,8 @@ Example
 
     $ myprogram X0
     00
+    10
 
-    1
     $ myprogram 10X10X0
     1001000
     1001010
