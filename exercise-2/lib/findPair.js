@@ -2,31 +2,30 @@ const { transform } = require('lodash');
 const parseFile = require('./parseFile');
 const path = require('path');
 
-module.exports = async function findPair(filename, balance = 0, maxItems = 2) {
+module.exports = async function findPair(filename, balance = 0) {
   let data = await parseFile(filename);
-  let remaining = balance;
+  let len = data.length;
+  let items = [];
+  let bestSum = 0;
 
-  // O(N)
-  return transform(
-    // Since we want to find the maximum spend on 2 distinct items, we sort
-    // the dataset by descending price so that the largest items can be
-    // purchased first.
-    data.sort((a, b) => b.price > a.price),
+  // O(N^2)
+  for (let x = 0; x < len; x++) {
+    for (y = 0; y < len; y++) {
+      if (y === x) continue;
 
-    // process each item
-    (result, item) => {
-      // if we can afford the item, push it into our results array and subtract
-      // the cost of it from our remaining balance.
-      if (item.price <= remaining) {
-        remaining -= item.price;
-        result.push(item);
+      const sum = data[x].price + data[y].price;
+
+      if (sum > bestSum && sum <= balance) {
+        bestSum = sum;
+
+        items = [data[x], data[y]];
+
+        if (bestSum === balance) {
+          break;
+        }
       }
+    }
+  }
 
-      // exit early once our quota has been met
-      if (result.length === maxItems) {
-        return false;
-      }
-    },
-    []
-  );
+  return items;
 };

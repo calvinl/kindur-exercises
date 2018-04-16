@@ -2,34 +2,25 @@ const findPair = require('./findPair');
 
 describe('findPaid()', function() {
   describe('when given a valid filename', function() {
-    let items;
-
-    describe('when balance is not enough to purchase anything', function() {
-      test('returns an empty array', async function() {
-        const items = await findPair('fixtures/prices.txt', 400);
-        expect(items).toEqual([]);
+    const testBalance = function(balance, expected) {
+      test(balance, async function() {
+        const items = await findPair('fixtures/prices.txt', balance);
+        expect(items.map(i => i.name)).toEqual(expected);
       });
-    });
+    };
 
-    describe('when balance is good enough for only 1 item', function() {
-      test('returns an empty array', async function() {
-        const items = await findPair('fixtures/prices.txt', 500);
-        expect(items.length).toEqual(1);
-      });
-    });
-
-    describe('when balance is good enough for more than 2 items', function() {
-      test('returns only 2 items', async function() {
-        const items = await findPair('fixtures/prices.txt', 10000);
-        expect(items.length).toEqual(2);
-      });
-
-      describe('and maxItems argument is specified', function() {
-        test('returns the specified max items', async function() {
-          const items = await findPair('fixtures/prices.txt', 20000, 5);
-          expect(items.length).toEqual(5);
-        });
-      });
+    describe('with various balances', function() {
+      testBalance(-1000, []);
+      testBalance(0, []);
+      testBalance(100, []);
+      testBalance(1100, []);
+      testBalance(1200, ['Candy Bar', 'Paperback Book']);
+      testBalance(1700, ['Paperback Book', 'Detergent']);
+      testBalance(2300, ['Paperback Book', 'Headphones']);
+      testBalance(2400, ['Detergent', 'Headphones']);
+      testBalance(3000, ['Detergent', 'Earmuffs']);
+      testBalance(7000, ['Detergent', 'Bluetooth Stereo']);
+      testBalance(10000, ['Earmuffs', 'Bluetooth Stereo']);
     });
   });
 
